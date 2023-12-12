@@ -1,3 +1,4 @@
+// function for creating an array from a txt file
 
 const getWords = (textfile) => {
     let textArray;

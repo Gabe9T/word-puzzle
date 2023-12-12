@@ -13,6 +13,7 @@ const App = () => {
   const [incorrectGuesses, setIncorrectGuesses] = useState(6)
   const [userState, setUserState] = useState(0);
   const [newGameState, setNewGame] = useState(false)
+  const [gameHistory, setGameHistory] = useState([])
   const winAnalysis = useCallback(() => {
     for (let i = 0; i < currentGameWord.length; i++) {
       if (gameBoard[i] !== currentGameWord[i]) {
@@ -21,6 +22,11 @@ const App = () => {
     }
     setUserState(2);
   }, [currentGameWord, gameBoard])
+  const loseAnalysis = useCallback(() => {
+    if (incorrectGuesses < 1) {
+      setUserState(1)
+    }
+  }, [incorrectGuesses])
 
   const random = () => {
     return Math.floor(Math.random() * wordList.length)
@@ -29,21 +35,14 @@ const App = () => {
   const newGame = () => {
     setNewGame(!newGameState);
   }
+  
   useEffect(() => { setCurrentGameWord(wordList[random()].split("")) }, [newGameState]);
   useEffect(() => { setGameBoard(currentGameWord.map(() => "_")) }, [newGameState, currentGameWord]);
   useEffect(() => { setIncorrectGuesses(6) }, [newGameState])
   useEffect(() => { setGuessBank([]) }, [newGameState])
   useEffect(() => { setUserState(0) }, [newGameState])
   useEffect(() => { winAnalysis() }, [gameBoard, winAnalysis])
-
-  const checkWordvsGuesses = () => {
-    for (let i = 0; i < currentGameWord.length; i++) {
-      if (gameBoard[i] !== currentGameWord[i]) {
-        return false
-      }
-    }
-    return true;
-  }
+  useEffect(() => { loseAnalysis() }, [incorrectGuesses, loseAnalysis])
 
   const checkGuessBank = (letter) => {
     if (currentPreviousGuess.includes(letter)) {
@@ -66,15 +65,11 @@ const App = () => {
         })
       setGameBoard(newGameBoard)
       setGuessBank([...currentPreviousGuess, letter])
+      setGameHistory([...gameHistory, true])
     } else {
       setIncorrectGuesses(incorrectGuesses - 1)
       setGuessBank([...currentPreviousGuess, letter])
-    }
-    console.log(checkWordvsGuesses())
-    if (checkWordvsGuesses()) {
-      setUserState(2);
-    } else if (incorrectGuesses === 0) {
-      setUserState(1)
+      setGameHistory([...gameHistory, false])
     }
   }
 
@@ -85,7 +80,7 @@ const App = () => {
       )
     } if (num === 1) {
       return (
-        <p>You Lose!</p>
+        <p>You Lose! The word was {currentGameWord}!</p>
       )
     } if (num === 2) {
       return (
@@ -112,6 +107,7 @@ const App = () => {
       <PreviousGuessBank
         currentPreviousGuess={currentPreviousGuess}
         incorrectGuesses={incorrectGuesses}
+        gameHistory={gameHistory}
       />
     </React.Fragment>
   );

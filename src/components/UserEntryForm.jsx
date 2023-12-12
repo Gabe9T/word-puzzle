@@ -4,9 +4,14 @@ import PropTypes from 'prop-types'
 const UserEntryForm = (props) => {
     return (
         <React.Fragment>
-            <label>Input Guess</label>
-            <input type='text' id='guessInput'></input>
-            <button onClick={() => props.updateGuesses(document.getElementById("guessInput").value)}> Enter Guess</button>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                props.updateGuesses(document.getElementById("guessInput").value.toLowerCase())
+                document.getElementById("guessInput").value = ""}}>
+            <label>Input Guess:&nbsp;</label>
+            <input type='text' maxLength="1" id='guessInput'></input>
+            <button type="submit">Enter Guess</button>
+            </form>
         </React.Fragment>
     )
 }

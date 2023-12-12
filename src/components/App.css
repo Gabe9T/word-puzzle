@@ -6,6 +6,16 @@
   text-align: center;
 }
 
+.trueLetter {
+  color: green;
+  font-weight: bold;
+}
+
+.falseLetter {
+  color: red;
+  font-weight: bold;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
