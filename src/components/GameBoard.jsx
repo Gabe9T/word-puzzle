@@ -4,14 +4,13 @@ import PropTypes from 'prop-types'
 const GameBoard = (props) => {
     return (
         <React.Fragment>
-            <h2>{props.gameBoard}</h2>
-            <p>Incorrect Guesses Remaining: 6</p>
+            <h2>{props.gameBoard.join(" ")}</h2>
         </React.Fragment>
     )
 }
 
 GameBoard.propTypes = {
-    gameBoard: PropTypes.string
+    gameBoard: PropTypes.array
 }
 
 export default GameBoard

@@ -13,7 +13,7 @@ const PreviousGuessBank = (props) => {
 }
 
 PreviousGuessBank.propTypes = {
-    currentPreviousGuess: PropTypes.string,
+    currentPreviousGuess: PropTypes.array,
     incorrectGuesses: PropTypes.number
 }
 

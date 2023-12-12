@@ -1,8 +1,16 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
-const Header = () => {
+const Header = (props) => {
 return (
-    <h1>Word Guess </h1>
+    <React.Fragment>
+        <h1>Word Guess </h1>
+        <button onClick={() => props.newGame()}>New Game!</button>
+    </React.Fragment>
 )
+}
+
+Header.propTypes = {
+    newGame: PropTypes.func,
 }
 export default Header;
