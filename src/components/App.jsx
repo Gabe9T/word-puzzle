@@ -7,28 +7,34 @@ import wordList from './../data/words'
 import './App.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { create, update } from './../redux/gameSlice'
+import { changeView, addHistory } from '../redux/userSlice';
 
 const App = () => {
-  const [userState, setUserState] = useState(0);
+  const userState = useSelector((state) => state.user.pageView)
   const incorrectGuesses = useSelector((state) => state.game.mistakes)
   const currentPreviousGuess = useSelector((state) => state.game.guessBank)
   const gameBoard = useSelector((state) => state.game.board)
   const currentGameWord = useSelector((state) => state.game.word)
+  const gameWon = useSelector((state) => state.game.gameWon)
   const dispatch = useDispatch()
-  const winAnalysis = useCallback(() => {
-    for (let i = 0; i < currentGameWord.length; i++) {
-      if (gameBoard[i] !== currentGameWord[i]) {
-        return;
-      }
-    }
-    setUserState(2);
-  }, [currentGameWord, gameBoard])
-  const loseAnalysis = useCallback(() => {
-    if (incorrectGuesses < 1) {
-      setUserState(1)
-    }
-  }, [incorrectGuesses])
 
+  const updateGameHistory = () => {
+    dispatch(addHistory({
+      board: gameBoard,
+      guessBank: currentPreviousGuess,
+      word: currentGameWord.join(""),
+      gameWon: gameWon,
+      mistakes: incorrectGuesses,
+    }))
+  }
+
+  if (gameWon === true) {
+    dispatch(changeView(2))
+    updateGameHistory()
+  } else if (gameWon === false) {
+    dispatch(changeView(1))
+    updateGameHistory()
+  }
 
   const random = () => {
     return Math.floor(Math.random() * wordList.length)
@@ -36,21 +42,14 @@ const App = () => {
 
   const newGame = () => {
     dispatch(create(wordList[random()]))
+    dispatch(changeView(0))
   }
-  
-  // useEffect(() => { setCurrentGameWord(wordList[random()].split("")) }, [newGameState]);
-  // useEffect(() => { setGameBoard(currentGameWord.map(() => "_")) }, [newGameState, currentGameWord]);
-  // useEffect(() => { setIncorrectGuesses(6) }, [newGameState])
-  // useEffect(() => { setGuessBank([]) }, [newGameState])
-  // useEffect(() => { setUserState(0) }, [newGameState])
-  // useEffect(() => { winAnalysis() }, [gameBoard, winAnalysis])
-  // useEffect(() => { loseAnalysis() }, [incorrectGuesses, loseAnalysis])
 
   const checkGuessBank = (letter) => {
-    if (currentPreviousGuess.includes(letter)) {
-      setUserState(3)
+    if (currentPreviousGuess.flat().includes(letter)) {
+      dispatch(changeView(3))
     } else {
-      setUserState(0)
+      dispatch(changeView(0))
       updateGuesses(letter)
     }
   }
