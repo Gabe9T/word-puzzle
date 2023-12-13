@@ -8,8 +8,9 @@ const UserEntryForm = (props) => {
                 e.preventDefault();
                 props.updateGuesses(document.getElementById("guessInput").value.toLowerCase())
                 document.getElementById("guessInput").value = ""}}>
-            <label>Input Guess:&nbsp;</label>
+            <label>Input Guess:&nbsp;</label><br/>
             <input type='text' maxLength="1" id='guessInput'></input>
+            <br/>
             <button type="submit">Enter Guess</button>
             </form>
         </React.Fragment>

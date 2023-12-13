@@ -47,8 +47,9 @@ App
 
 ## Known Bugs
 
-*   N/A
+*   Input takes non A-Z inputs still
+*   Colors of correct and incorrect letters are not set
 
 ## License
 
-Copyright [Henry Oberholtzer](https://www.henryoberholtzer.com/) (c) 2023
+Copyright [Henry Oberholtzer](https://www.henryoberholtzer.com/) & Gabriel Tucker (c) 2023
