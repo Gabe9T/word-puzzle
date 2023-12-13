@@ -38,7 +38,7 @@ App
 │   - Allows user to enter a guess
 ├── Previous Guesses
 │   │   - Displays all guesses by the user
-
+```
 ## Setup/Installation Requirements
 
 * Download the repository using `git clone <URL>` in terminal or downloading the ZIP folder from github
