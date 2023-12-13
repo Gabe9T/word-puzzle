@@ -17,7 +17,7 @@ const UserEntryForm = (props) => {
                 setEntryValue(value)
             }}
             value={entryValue}
-            type='text' 
+            type='text'  
             maxLength="1" 
             id='guessInput'
             ></input>
