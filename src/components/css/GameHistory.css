@@ -1,0 +1,21 @@
+.gameHistoryGame {
+    width: 50%;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 20px;
+    text-align: left;
+}
+
+.gameHistoryGame * {
+    margin: 3px;
+}
+
+.won{
+    border: 2px solid green;
+    color: green;
+}
+
+.lost {
+    border: 2px solid red;
+    color: red;
+}

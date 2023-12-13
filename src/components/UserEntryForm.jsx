@@ -1,34 +1,46 @@
 import React from "react";
-import PropTypes from 'prop-types'
+import { update } from './../redux/gameSlice'
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { changeView } from "../redux/userSlice";
 
-const UserEntryForm = (props) => {
+
+const UserEntryForm = () => {
+    const dispatch = useDispatch()
+    const guessBank = useSelector((state) => state.game.guessBank)
     const [entryValue, setEntryValue] = useState("")
 
     return (
         <React.Fragment>
             <form onSubmit={(e) => {
                 e.preventDefault();
-                props.updateGuesses(entryValue.toLowerCase())
-                document.getElementById("guessInput").value = ""}}>
-            <label>Input Guess:&nbsp;</label><br/>
-            <input onChange={(e) => {
-                const value = e.target.value.replace(/[^A-Za-z]/ig, '')
-                setEntryValue(value)
-            }}
-            value={entryValue}
-            type='text'  
-            maxLength="1" 
-            id='guessInput'
-            ></input>
-            <br/>
-            <button type="submit">Enter Guess</button>
+                const letter = entryValue.toLowerCase()
+                if (guessBank.flat().includes(letter)) {
+                    dispatch(changeView(3))
+                } else {
+                    dispatch(changeView(0))
+                    dispatch(update(letter))
+                }
+                setEntryValue("")
+                const input = document.getElementById('guessInput')
+                input.focus()
+                input.select()
+            }}>
+                <label>Input Guess:&nbsp;</label><br />
+                <input onChange={(e) => {
+                    const value = e.target.value.replace(/[^A-Za-z]/ig, '')
+                    setEntryValue(value)
+                }}
+                    value={entryValue}
+                    type='text'
+                    maxLength="1"
+                    id='guessInput'
+                ></input>
+                <br />
+                <button type="submit">Enter Guess</button>
             </form>
         </React.Fragment>
     )
 }
 
-UserEntryForm.propTypes = {
-    updateGuesses: PropTypes.func.isRequired
-}
 export default UserEntryForm;

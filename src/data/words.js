@@ -191354,7 +191354,7 @@ const wordList = [
     "zythum",
     "zyzzyva",
     "zyzzyvas",
-    "zzza"
+    "pizzaparty"
 ]
 
 export default wordList;

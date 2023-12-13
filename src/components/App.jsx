@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import Header from './Header';
 import GameBoard from './GameBoard'
 import UserEntryForm from './UserEntryForm';
 import PreviousGuessBank from './PreviousGuessBank';
-import wordList from './../data/words'
-import './App.css';
+import GameHistory from './GameHistory';
+import './css/App.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { create, update } from './../redux/gameSlice'
 import { changeView, addHistory } from '../redux/userSlice';
 
 const App = () => {
@@ -17,46 +16,27 @@ const App = () => {
   const currentGameWord = useSelector((state) => state.game.word)
   const gameWon = useSelector((state) => state.game.gameWon)
   const dispatch = useDispatch()
-
-  const updateGameHistory = () => {
-    dispatch(addHistory({
-      board: gameBoard,
-      guessBank: currentPreviousGuess,
-      word: currentGameWord.join(""),
-      gameWon: gameWon,
-      mistakes: incorrectGuesses,
-    }))
-  }
-
-  if (gameWon === true) {
-    dispatch(changeView(2))
-    updateGameHistory()
-  } else if (gameWon === false) {
-    dispatch(changeView(1))
-    updateGameHistory()
-  }
-
-  const random = () => {
-    return Math.floor(Math.random() * wordList.length)
-  }
-
-  const newGame = () => {
-    dispatch(create(wordList[random()]))
-    dispatch(changeView(0))
-  }
-
-  const checkGuessBank = (letter) => {
-    if (currentPreviousGuess.flat().includes(letter)) {
-      dispatch(changeView(3))
-    } else {
-      dispatch(changeView(0))
-      updateGuesses(letter)
+  const updateGameHistory = useCallback((num) => {
+    dispatch(changeView(num))
+    return () => {
+      dispatch(addHistory({
+        board: gameBoard.join(" ").toUpperCase(),
+        guessBank: currentPreviousGuess,
+        word: currentGameWord.join(" ").toUpperCase(),
+        gameWon: gameWon,
+        mistakes: incorrectGuesses,
+        score: Math.round(((incorrectGuesses * (currentGameWord.length + currentPreviousGuess.length)) * 1000)/3.1459)
+      }))
     }
-  }
+  }, [gameBoard, currentPreviousGuess, currentGameWord, gameWon, incorrectGuesses, dispatch])
 
-  const updateGuesses = (letter) => {
-    dispatch(update(letter))
-  }
+  useEffect(() => {
+    if (gameWon === true) {
+      updateGameHistory(2)()
+    } else if (gameWon === false) {
+      updateGameHistory(1)()
+    }
+  }, [gameWon, updateGameHistory])
 
   const userStateItem = (num) => {
     if (num === 0) {
@@ -81,18 +61,16 @@ const App = () => {
   return (
     <React.Fragment>
       <Header
-        newGame={newGame}
+
       />
-      <GameBoard
-        gameBoard={gameBoard}
-      />
+      <GameBoard/>
       {userStateItem(userState)}
-      <UserEntryForm
-        updateGuesses={checkGuessBank} />
+      <UserEntryForm/>
       <PreviousGuessBank
         currentPreviousGuess={currentPreviousGuess}
         incorrectGuesses={incorrectGuesses}
       />
+      <GameHistory />
     </React.Fragment>
   );
 }

@@ -1,16 +1,13 @@
 import React from "react"
-import PropTypes from 'prop-types'
+import { useSelector } from "react-redux"
 
-const GameBoard = (props) => {
+const GameBoard = () => {
+    const gameBoard = useSelector((state) => state.game.board)
     return (
         <React.Fragment>
-            <h2>{props.gameBoard.join(" ").toUpperCase()}</h2>
+            <h2>{gameBoard.join(" ").toUpperCase()}</h2>
         </React.Fragment>
     )
-}
-
-GameBoard.propTypes = {
-    gameBoard: PropTypes.array
 }
 
 export default GameBoard
