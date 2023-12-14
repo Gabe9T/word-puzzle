@@ -1,7 +1,4 @@
-* {
-  text-align: center;
 
-}
 
 .trueLetter {
   color: green;
@@ -13,8 +10,9 @@
   font-weight: bold;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.gameArea {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 

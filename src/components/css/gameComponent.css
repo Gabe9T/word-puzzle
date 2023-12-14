@@ -1,0 +1,44 @@
+.gameComponent {
+    border: 2px solid black;
+    border-radius: 5px;
+    width: 400px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#difficulty {
+    color: white;
+    background-color: white;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 25px;
+    background: white;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    border: solid black 1px;
+    border-radius: 3px;
+    padding: 0;
+}
+
+#difficulty::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 100%;
+    background: #26a878;
+    cursor: pointer;
+    
+}
+
+.wordLength {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}

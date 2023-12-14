@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
+
 const PreviousGuessBank = (s) => {
     const incorrectGuesses = useSelector((state) => state.game.mistakes)
     const guessBank = useSelector((state) => state.game.guessBank)

@@ -1,15 +1,13 @@
 import React, { useEffect, useCallback } from 'react';
 import Header from './Header';
-import GameBoard from './GameBoard'
-import UserEntryForm from './UserEntryForm';
-import PreviousGuessBank from './PreviousGuessBank';
+import GameComponent from './GameComponent';
 import GameHistory from './GameHistory';
 import './css/App.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeView, addHistory, addScore } from '../redux/userSlice';
 
+
 const App = () => {
-  const userState = useSelector((state) => state.user.pageView)
   const incorrectGuesses = useSelector((state) => state.game.mistakes)
   const guessBank = useSelector((state) => state.game.guessBank)
   const gameBoard = useSelector((state) => state.game.board)
@@ -19,17 +17,24 @@ const App = () => {
   const updateGameHistory = useCallback((num) => {
     dispatch(changeView(num))
     return () => {
-      const score = Math.round(((
+      let score = Math.round(((
         incorrectGuesses * 
         (word.length + guessBank.length)) 
         * 1000)/3.1459)
+      if (guessBank.length === word.length) {
+        score = score + 1000000
+      } else if (guessBank.length <= word.length + word.length / 4) {
+        score = score + 5000
+      } else if (guessBank.length <= word.length + word.length / 2) {
+        score = score + 2500
+      }
       dispatch(addHistory({
         board: gameBoard.join(" ").toUpperCase(),
         guessBank: guessBank,
         word: word.join(" ").toUpperCase(),
         gameWon: gameWon,
         mistakes: incorrectGuesses,
-        score: score
+        score: score,
       }))
       dispatch(addScore(score))
     }
@@ -41,36 +46,16 @@ const App = () => {
     } else if (gameWon === false) {
       updateGameHistory(1)()
     }
+    console.log()
   }, [gameWon, updateGameHistory])
-
-  const userStateItem = (num) => {
-    if (num === 0) {
-      return (
-        <p></p>
-      )
-    } if (num === 1) {
-      return (
-        <p>You Lose! The word was {word}!</p>
-      )
-    } if (num === 2) {
-      return (
-        <p>You Win!</p>
-      )
-    } if (num === 3) {
-      return (
-        <p>You Already Guessed This Letter!</p>
-      )
-    }
-  }
 
   return (
     <React.Fragment>
-      <Header/>
-      <GameBoard/>
-      {userStateItem(userState)}
-      <UserEntryForm/>
-      <PreviousGuessBank/>
-      <GameHistory />
+      <Header />
+      <div className="gameArea">
+        <GameComponent />
+        <GameHistory />
+      </div>
     </React.Fragment>
   );
 }

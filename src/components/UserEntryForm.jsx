@@ -8,13 +8,14 @@ import { changeView } from "../redux/userSlice";
 const UserEntryForm = () => {
     const dispatch = useDispatch()
     const guessBank = useSelector((state) => state.game.guessBank)
+    const wordLength = useSelector((state) => state.game.word.length)
     const [entryValue, setEntryValue] = useState("")
 
     return (
         <React.Fragment>
             <form onSubmit={(e) => {
                 e.preventDefault();
-                const letter = entryValue.toLowerCase()
+                const letter = entryValue.toUpperCase()
                 if (guessBank.flat().includes(letter)) {
                     dispatch(changeView(3))
                 } else {
@@ -33,7 +34,7 @@ const UserEntryForm = () => {
                 }}
                     value={entryValue}
                     type='text'
-                    maxLength="1"
+                    maxLength={wordLength}
                     id='guessInput'
                 ></input>
                 <br />

@@ -13,22 +13,29 @@ export const gameSlice = createSlice({
     initialState,
     reducers: {
         update: (state, action) => {
-            if (state.word.includes(action.payload)) {
-                const newArray = state.board.map((blank, i) => {
-                    if (state.word[i] === action.payload) {
-                        return action.payload
-                    } else {
-                        return blank
+            const enterLetter = (letter) => {
+                if (state.word.includes(letter)) {
+                    const newArray = state.board.map((blank, i) => {
+                        if (state.word[i] === letter) {
+                            return letter
+                        } else {
+                            return blank
+                        }
+                    })
+                    state.board = newArray;
+                    state.guessBank.push([ letter, true]);
+                } else {
+                    state.guessBank.push([ letter, false])
+                    state.mistakes = state.mistakes - 1;
+                    if (state.mistakes < 1) {
+                        state.gameWon = false;
                     }
-                })
-                state.board = newArray;
-                state.guessBank.push([ action.payload, true]);
-            } else {
-                state.guessBank.push([ action.payload, false])
-                state.mistakes = state.mistakes - 1;
-                if (state.mistakes < 1) {
-                    state.gameWon = false;
                 }
+            }
+            if(action.payload.trim().length === state.word.length) {
+                action.payload.split("").forEach((letter) => enterLetter(letter))
+            } else {
+                enterLetter(action.payload.trim().charAt(0))
             }
             const checkGame = () => {
                 for (let i = 0; i < state.word.length; i++) {

@@ -1,5 +1,5 @@
 .gameHistoryGame {
-    width: 50%;
+    width: 360px;
     margin: 10px;
     padding: 5px;
     border-radius: 20px;
@@ -8,6 +8,17 @@
 
 .gameHistoryGame * {
     margin: 3px;
+}
+
+.gameHistoryTitle {
+    text-align: center;
+}
+
+.gameHistory {
+    width: 400px;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 5px;
 }
 
 .won{
