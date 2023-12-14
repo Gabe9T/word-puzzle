@@ -60,9 +60,7 @@ const App = () => {
 
   return (
     <React.Fragment>
-      <Header
-
-      />
+      <Header/>
       <GameBoard/>
       {userStateItem(userState)}
       <UserEntryForm/>
