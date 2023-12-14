@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = {
+export const initialState = {
     word: [],
     board: ["N","E","W","_","G","A","M","E"],
     guessBank: [],
@@ -41,7 +41,7 @@ export const gameSlice = createSlice({
             checkGame()
         },
         create: (state, action) => {
-            const array = action.payload.split("")
+            const array = action.payload.toUpperCase().split("")
             state.mistakes = 6
             state.word = array
             state.guessBank = []

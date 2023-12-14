@@ -1,12 +1,14 @@
 import React from "react";
-import PropTypes from  'prop-types'
+import { useSelector } from "react-redux";
 
-const PreviousGuessBank = (props) => {
+const PreviousGuessBank = (s) => {
+    const incorrectGuesses = useSelector((state) => state.game.mistakes)
+    const guessBank = useSelector((state) => state.game.guessBank)
     return (
         <React.Fragment>
             <h4>Previous Guesses:</h4>
             <p>
-            {props.currentPreviousGuess.map((letterArray, i) => {
+            {guessBank.map((letterArray, i) => {
                 if (letterArray[1] === false) {
                     return(
                         <span key={i} className="falseLetter">{letterArray[0].toUpperCase()} </span>
@@ -19,14 +21,9 @@ const PreviousGuessBank = (props) => {
             })}
             </p>
             <h4>Incorrect Guesses Remaining:</h4>
-            {props.incorrectGuesses.toString()}
+            {incorrectGuesses.toString()}
         </React.Fragment>
     )
-}
-
-PreviousGuessBank.propTypes = {
-    currentPreviousGuess: PropTypes.array,
-    incorrectGuesses: PropTypes.number
 }
 
 export default PreviousGuessBank;

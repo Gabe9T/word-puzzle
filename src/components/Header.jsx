@@ -10,7 +10,7 @@ const random = (max) => {
 }
 
 const Header = () => {
-    const [difficulty, setDifficulty] = useState(4)
+    const [difficulty, setDifficulty] = useState(5)
     const dispatch = useDispatch()
     return (
         <React.Fragment>

@@ -6,29 +6,34 @@ import PreviousGuessBank from './PreviousGuessBank';
 import GameHistory from './GameHistory';
 import './css/App.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeView, addHistory } from '../redux/userSlice';
+import { changeView, addHistory, addScore } from '../redux/userSlice';
 
 const App = () => {
   const userState = useSelector((state) => state.user.pageView)
   const incorrectGuesses = useSelector((state) => state.game.mistakes)
-  const currentPreviousGuess = useSelector((state) => state.game.guessBank)
+  const guessBank = useSelector((state) => state.game.guessBank)
   const gameBoard = useSelector((state) => state.game.board)
-  const currentGameWord = useSelector((state) => state.game.word)
+  const word = useSelector((state) => state.game.word)
   const gameWon = useSelector((state) => state.game.gameWon)
   const dispatch = useDispatch()
   const updateGameHistory = useCallback((num) => {
     dispatch(changeView(num))
     return () => {
+      const score = Math.round(((
+        incorrectGuesses * 
+        (word.length + guessBank.length)) 
+        * 1000)/3.1459)
       dispatch(addHistory({
         board: gameBoard.join(" ").toUpperCase(),
-        guessBank: currentPreviousGuess,
-        word: currentGameWord.join(" ").toUpperCase(),
+        guessBank: guessBank,
+        word: word.join(" ").toUpperCase(),
         gameWon: gameWon,
         mistakes: incorrectGuesses,
-        score: Math.round(((incorrectGuesses * (currentGameWord.length + currentPreviousGuess.length)) * 1000)/3.1459)
+        score: score
       }))
+      dispatch(addScore(score))
     }
-  }, [gameBoard, currentPreviousGuess, currentGameWord, gameWon, incorrectGuesses, dispatch])
+  }, [gameBoard, guessBank, word, gameWon, incorrectGuesses, dispatch])
 
   useEffect(() => {
     if (gameWon === true) {
@@ -45,7 +50,7 @@ const App = () => {
       )
     } if (num === 1) {
       return (
-        <p>You Lose! The word was {currentGameWord}!</p>
+        <p>You Lose! The word was {word}!</p>
       )
     } if (num === 2) {
       return (
@@ -64,10 +69,7 @@ const App = () => {
       <GameBoard/>
       {userStateItem(userState)}
       <UserEntryForm/>
-      <PreviousGuessBank
-        currentPreviousGuess={currentPreviousGuess}
-        incorrectGuesses={incorrectGuesses}
-      />
+      <PreviousGuessBank/>
       <GameHistory />
     </React.Fragment>
   );

@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 
-const initialState = {
+export const initialState = {
     pageView: 0,
-    gameHistory: []
+    gameHistory: [],
+    score: 0
 }
 export const userSlice = createSlice({
     name: 'user',
@@ -14,9 +15,12 @@ export const userSlice = createSlice({
         },
         addHistory: (state, action) => {
             state.gameHistory.push(action.payload)
+        },
+        addScore: (state, action) => {
+            state.score = state.score + action.payload
         }
     }
 })
 
-export const { changeView, addHistory } = userSlice.actions
+export const { changeView, addHistory, addScore } = userSlice.actions
 export default userSlice.reducer
